@@ -29,7 +29,7 @@ import com.gestioncourrier.services.CourrierService;
 @Controller
 public class CourrierController {
 	
-	/*Déclarer de courrierservice de type CourrierService */ 
+	
 	@Autowired
 	private CourrierService courrierservice; 
 
