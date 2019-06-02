@@ -29,19 +29,21 @@ import com.gestioncourrier.services.CourrierService;
 @Controller
 public class CourrierController {
 	
+	/*Déclarer de courrierservice de type CourrierService */ 
 	@Autowired
-	private CourrierService courrierservice;
+	private CourrierService courrierservice; 
 
 
-	@GetMapping("/courrier")
+	//Chargement des données et affichage de la liste des courriers existants
+	@GetMapping("/courrier") 
 	public String init1 (HttpServletRequest req ) {
 		req.setAttribute("courrierview", courrierservice.findAllCourrier());
 		req.setAttribute("mode", "COURRIER_VIEW");
 		return "courrier";	
 	}
 	
-	
-	@GetMapping("/updatecourrier")
+	//Modification d'un courrier
+	@GetMapping("/updatecourrier") 
 	public String init(@RequestParam int id, HttpServletRequest req) {
 		req.setAttribute("courrierupdate", courrierservice.findOneCourrier(id));
 		req.setAttribute("nature", courrierservice.findAllNatureCourrier());
@@ -53,6 +55,7 @@ public class CourrierController {
 		return "courrier";
 	}
 	
+	//Modification de bordereau 
 	@GetMapping("/attribuerborderaux")
 	public String bord(@RequestParam int id, HttpServletRequest req) {
 		req.setAttribute("courrierupdate", courrierservice.findOneCourrier(id));
@@ -64,7 +67,7 @@ public class CourrierController {
 		return "courrier";
 	}
 	
-
+	//Enregistrement du nouveau bordereau modifié
 	@PostMapping("/savenewborderaux")
 	public void saveborderaux(@ModelAttribute Borderaux borderaux,@ModelAttribute Courrier courrier, HttpServletRequest req, HttpServletResponse resp) {
 		courrierservice.savecourrierborderaux(borderaux, courrier);
@@ -79,13 +82,14 @@ public class CourrierController {
 		}
 	}
 	
-	
+	//Spring validator 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 	binder.registerCustomEditor (Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-mm-dd"), false));
 	}
 	
-	@PostMapping("/savecourrierall")
+	//Enregistrement du courrier ajouté
+	@PostMapping("/savecourrierall") 
 	public void savecorrespondant(@ModelAttribute Courrier courrier,@ModelAttribute Correspondant cr, HttpServletRequest req, HttpServletResponse resp) {
 		courrierservice.savecourrier(courrier,cr);
 		req.setAttribute("courrierview", courrierservice.findAllCourrier());
@@ -98,7 +102,8 @@ public class CourrierController {
 		}
 	}
 	
-	@PostMapping("/savecourrier")
+	//Enregistrement de la modification du courrier 
+	@PostMapping("/savecourrier") 
 	public void savecorrespondant(@ModelAttribute Courrier courrier, HttpServletRequest req, HttpServletResponse resp) {
 		courrierservice.saveC(courrier);
 		req.setAttribute("courrierview", courrierservice.findAllCourrier());
@@ -111,7 +116,8 @@ public class CourrierController {
 		}
 	}
 	
-	@GetMapping("/newcourrier")
+	//Ajout d'un nouveau courrier
+	@GetMapping("/newcourrier") 
 	public String newcourrier(HttpServletRequest req) {
 		req.setAttribute("nature", courrierservice.findAllNatureCourrier());
 		req.setAttribute("type", courrierservice.findAllTypeCourrier());
@@ -124,6 +130,7 @@ public class CourrierController {
 		return "courrier";
 	}
 	
+	// Suppression d'un courrier
 	@GetMapping("/deletecourrier")
 	public void deletecorrespondant(@RequestParam int id, HttpServletRequest req, HttpServletResponse resp) {
 		courrierservice.deletecourrier(id);
